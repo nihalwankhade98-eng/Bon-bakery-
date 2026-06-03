@@ -1,0 +1,873 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  .site {
+    font-family: 'DM Sans', sans-serif;
+    background: #fdf6ec;
+    color: #1e1109;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    background: rgba(253,246,236,0.95);
+    border-bottom: 1px solid rgba(196,132,90,0.2);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #2c1a0e; cursor: pointer; }
+  .nav-logo span { font-size: 0.7rem; letter-spacing: 0.25em; display: block; color: #c4845a; text-transform: uppercase; font-family: 'DM Sans', sans-serif; font-weight: 300; margin-top: -4px; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links button { background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: #5a3e2b; cursor: pointer; padding: 4px 0; transition: color 0.2s; }
+  .nav-links button:hover, .nav-links button.active { color: #2c1a0e; }
+  .nav-cta { background: #2c1a0e; color: #fdf6ec; border: none; padding: 0.55rem 1.2rem; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+  .nav-cta:hover { background: #6b3a1f; }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── HOME ── */
+  .hero {
+    display: grid; grid-template-columns: 1fr 1fr; min-height: 520px;
+    background: #fffdf9;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 3rem 2.5rem 3rem 2.5rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: #c4845a; margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: #d4a853; display: block; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 700; line-height: 1.05; color: #2c1a0e; margin-bottom: 1rem; }
+  .hero-title em { font-style: italic; color: #c4845a; }
+  .hero-sub { font-size: 0.95rem; color: #5a3e2b; line-height: 1.7; max-width: 340px; margin-bottom: 2rem; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-dark { background: #2c1a0e; color: #fdf6ec; border: none; padding: 0.75rem 1.8rem; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+  .btn-dark:hover { background: #6b3a1f; }
+  .btn-outline { background: transparent; color: #2c1a0e; border: 1.5px solid #2c1a0e; padding: 0.75rem 1.8rem; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .btn-outline:hover { background: #2c1a0e; color: #fdf6ec; }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+    background: #8B5E3C;
+  }
+  .hero-right img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+  .hero-badge {
+    position: absolute; bottom: 2rem; left: -1.5rem;
+    width: 100px; height: 100px; border-radius: 50%;
+    background: #d4a853;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(212,168,83,0.5);
+  }
+  .hero-badge .num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: #2c1a0e; line-height: 1; }
+  .hero-badge .lbl { font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase; color: #2c1a0e; text-align: center; margin-top: 2px; }
+
+  /* MARQUEE */
+  .marquee { background: #2c1a0e; padding: 0.7rem 0; overflow: hidden; }
+  .marquee-inner { display: flex; gap: 0; width: max-content; animation: scroll 24s linear infinite; }
+  .marquee-item { font-size: 0.88rem; font-style: italic; color: #d4a853; padding: 0 2rem; white-space: nowrap; font-family: 'Playfair Display', serif; }
+  .marquee-item::after { content: ' ✦ '; color: #c4845a; font-style: normal; font-size: 0.55rem; vertical-align: middle; }
+  @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* SPECIALS */
+  .specials { padding: 3.5rem 2rem; background: #fdf6ec; }
+  .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+  .sec-label { font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: #c4845a; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.7rem; }
+  .sec-label::before { content: ''; width: 22px; height: 1px; background: #d4a853; }
+  .sec-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #2c1a0e; line-height: 1.1; }
+  .sec-title em { font-style: italic; color: #c4845a; }
+
+  .specials-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 1rem; }
+  .spec-card { position: relative; border-radius: 3px; overflow: hidden; cursor: pointer; }
+  .spec-card:first-child { grid-row: span 2; }
+  .spec-card img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.5s; }
+  .spec-card:first-child img { height: 100%; min-height: 420px; }
+  .spec-card:hover img { transform: scale(1.04); }
+  .spec-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(44,26,14,0.88) 0%, rgba(44,26,14,0.15) 55%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.2rem; }
+  .spec-tag { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: #d4a853; margin-bottom: 0.25rem; }
+  .spec-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #fdf6ec; }
+  .spec-card:first-child .spec-name { font-size: 1.7rem; }
+  .spec-price { font-size: 0.85rem; color: #f0d08a; margin-top: 0.15rem; }
+
+  /* STORY */
+  .story { background: #2c1a0e; padding: 3.5rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
+  .story .sec-label { color: #d4a853; }
+  .story .sec-label::before { background: #c4845a; }
+  .story .sec-title { color: #fdf6ec; }
+  .story p { font-size: 0.95rem; color: rgba(253,246,236,0.72); line-height: 1.85; margin-bottom: 1rem; }
+  .story a { color: #d4a853; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid #d4a853; padding-bottom: 1px; cursor: pointer; }
+  .story-imgs { position: relative; height: 340px; }
+  .story-main { position: absolute; top: 0; right: 0; width: 80%; height: 88%; object-fit: cover; border-radius: 3px; }
+  .story-accent { position: absolute; bottom: 0; left: 0; width: 52%; height: 52%; object-fit: cover; border-radius: 3px; border: 4px solid #2c1a0e; }
+
+  /* STATS */
+  .stats { background: #f2d5c0; display: grid; grid-template-columns: repeat(4,1fr); padding: 2.5rem 2rem; gap: 1rem; }
+  .stat { text-align: center; }
+  .stat .num { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: #2c1a0e; line-height: 1; }
+  .stat .lbl { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: #5a3e2b; margin-top: 0.3rem; }
+
+  /* TESTIMONIALS */
+  .testi { padding: 3.5rem 2rem; background: #fffdf9; text-align: center; }
+  .testi .sec-label { justify-content: center; }
+  .testi .sec-label::before { display: none; }
+  .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; margin-top: 2.5rem; text-align: left; }
+  .testi-card { background: #fdf6ec; padding: 1.8rem 1.5rem; border-radius: 3px; border-top: 3px solid #d4a853; }
+  .testi-stars { color: #d4a853; font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 0.8rem; }
+  .testi-text { font-size: 0.92rem; font-style: italic; color: #5a3e2b; line-height: 1.7; margin-bottom: 1.2rem; }
+  .testi-name { font-size: 0.85rem; font-weight: 500; color: #2c1a0e; }
+  .testi-role { font-size: 0.75rem; color: #9c7a5e; }
+
+  /* ── MENU PAGE ── */
+  .page-hero { background: #2c1a0e; padding: 3rem 2rem 2.5rem; }
+  .page-hero .sec-label { color: #d4a853; }
+  .page-hero .sec-label::before { background: #c4845a; }
+  .page-hero .sec-title { color: #fdf6ec; font-size: 2.5rem; }
+  .page-hero .sec-title em { color: #d4a853; }
+  .page-hero p { font-size: 0.92rem; color: rgba(253,246,236,0.7); margin-top: 0.6rem; max-width: 440px; line-height: 1.7; }
+
+  .menu-sec { padding: 2.5rem 2rem; }
+  .filter-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+  .filt-btn { border: 1.5px solid #c4845a; background: transparent; color: #5a3e2b; padding: 0.45rem 1rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; font-family: 'DM Sans', sans-serif; border-radius: 2px; transition: all 0.2s; }
+  .filt-btn.active, .filt-btn:hover { background: #2c1a0e; border-color: #2c1a0e; color: #fdf6ec; }
+
+  .cat-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-style: italic; color: #2c1a0e; margin-bottom: 1.5rem; padding-bottom: 0.6rem; border-bottom: 1px solid rgba(196,132,90,0.3); }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 1.5rem; margin-bottom: 3.5rem; }
+  .menu-card { background: #fffdf9; border-radius: 3px; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s; }
+  .menu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(44,26,14,0.1); }
+  .menu-card img { width: 100%; height: 170px; object-fit: cover; display: block; }
+  .menu-body { padding: 1.1rem 1.2rem; }
+  .menu-tag { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: #c4845a; margin-bottom: 0.25rem; }
+  .menu-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #2c1a0e; margin-bottom: 0.25rem; }
+  .menu-desc { font-size: 0.82rem; color: #9c7a5e; line-height: 1.55; margin-bottom: 0.9rem; }
+  .menu-foot { display: flex; justify-content: space-between; align-items: center; }
+  .menu-price { font-family: 'Playfair Display', serif; font-size: 1rem; color: #6b3a1f; font-weight: 600; }
+  .add-btn { background: #2c1a0e; color: #fdf6ec; border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+  .add-btn:hover { background: #6b3a1f; }
+
+
+  /* MENU VISUAL GALLERY */
+  .menu-gallery {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    min-height: 240px;
+    background: #ddd;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.06);
+  }
+
+  .gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.72), rgba(0,0,0,0.15));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.4rem;
+  }
+
+  .gallery-overlay span {
+    color: #d4a853;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .gallery-overlay h3 {
+    color: #fffdf9;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    line-height: 1.15;
+  }
+
+  @media (max-width: 900px) {
+    .menu-gallery {
+      grid-template-columns: 1fr;
+    }
+  }
+
+
+  /* ── ABOUT PAGE ── */
+  .about-story { padding: 3.5rem 2rem; background: #fdf6ec; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-bottom: 3rem; }
+  .about-img-wrap { position: relative; }
+  .about-img-wrap img { width: 100%; height: 380px; object-fit: cover; border-radius: 3px; }
+  .about-acc { position: absolute; bottom: -1.5rem; right: -1.5rem; width: 55%; height: 200px; object-fit: cover; border-radius: 3px; border: 4px solid #fdf6ec; box-shadow: 0 8px 28px rgba(44,26,14,0.15); }
+  .about-text p { font-size: 0.92rem; color: #5a3e2b; line-height: 1.85; margin-bottom: 1rem; }
+
+  .values { background: #fffdf9; padding: 3rem 2rem; text-align: center; }
+  .values .sec-label { justify-content: center; }
+  .values .sec-label::before { display: none; }
+  .val-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 2.5rem; text-align: left; }
+  .val-card { background: #fdf6ec; padding: 2rem 1.5rem; border-radius: 3px; }
+  .val-icon { font-size: 1.8rem; margin-bottom: 0.8rem; display: block; }
+  .val-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #2c1a0e; margin-bottom: 0.5rem; }
+  .val-card p { font-size: 0.85rem; color: #5a3e2b; line-height: 1.7; }
+
+  .team-sec { padding: 3rem 2rem; background: #fdf6ec; text-align: center; }
+  .team-sec .sec-label { justify-content: center; }
+  .team-sec .sec-label::before { display: none; }
+  .team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 2.5rem; }
+  .team-card img { width: 100%; height: 260px; object-fit: cover; border-radius: 3px; display: block; margin-bottom: 0.9rem; filter: grayscale(15%); transition: filter 0.3s; }
+  .team-card:hover img { filter: grayscale(0); }
+  .team-card h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #2c1a0e; }
+  .team-card p { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #c4845a; margin-top: 0.2rem; }
+
+  .contact-sec { background: #f2d5c0; padding: 3rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  .contact-sec h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: #2c1a0e; line-height: 1.2; margin-bottom: 0.8rem; }
+  .contact-sec > div > p { font-size: 0.92rem; color: #5a3e2b; line-height: 1.8; margin-bottom: 1.5rem; }
+  .contact-items { display: flex; flex-direction: column; gap: 1.2rem; }
+  .c-item { display: flex; gap: 0.9rem; }
+  .c-ico { font-size: 1.3rem; }
+  .c-text strong { display: block; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: #2c1a0e; margin-bottom: 0.15rem; }
+  .c-text p { font-size: 0.88rem; color: #5a3e2b; line-height: 1.6; }
+
+  /* FOOTER */
+  footer { background: #2c1a0e; padding: 3rem 2rem 1.5rem; }
+  .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 2rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(253,246,236,0.1); margin-bottom: 1.2rem; }
+  .f-logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: #fdf6ec; }
+  .f-logo span { display: block; font-family: 'DM Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase; color: #d4a853; margin-top: -3px; margin-bottom: 0.8rem; font-weight: 300; }
+  .f-brand p { font-size: 0.85rem; color: rgba(253,246,236,0.62); line-height: 1.75; max-width: 220px; }
+  .f-col h4 { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: #fdf6ec; margin-bottom: 1rem; }
+  .f-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+  .f-col ul button { background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: rgba(253,246,236,0.6); cursor: pointer; text-align: left; padding: 0; transition: color 0.2s; }
+  .f-col ul button:hover { color: #d4a853; }
+  .f-col p { font-size: 0.88rem; color: rgba(253,246,236,0.62); line-height: 1.8; }
+  .footer-bot { display: flex; justify-content: space-between; font-size: 0.72rem; color: rgba(253,246,236,0.35); flex-wrap: wrap; gap: 0.3rem; }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: #2c1a0e; color: #fdf6ec; padding: 0.75rem 1.4rem; border-radius: 3px; font-size: 0.85rem; box-shadow: 0 6px 24px rgba(0,0,0,0.2); opacity: 0; transform: translateY(8px); transition: all 0.3s; pointer-events: none; z-index: 999; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  .hidden { display: none !important; }
+
+  /* RESPONSIVE DESIGN */
+  @media (max-width: 1024px) {
+    .hero,
+    .story,
+    .about-grid,
+    .contact-sec,
+    .footer-grid,
+    .specials-grid,
+    .stats,
+    .testi-grid,
+    .val-grid,
+    .team-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .story-imgs {
+      height: 300px;
+    }
+  }
+
+  @media (max-width: 768px) {
+
+    .nav {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .nav-links {
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero,
+    .story,
+    .about-grid,
+    .contact-sec,
+    .footer-grid,
+    .specials-grid,
+    .stats,
+    .testi-grid,
+    .val-grid,
+    .team-grid,
+    .menu-gallery {
+      grid-template-columns: 1fr !important;
+    }
+
+    .hero-left,
+    .specials,
+    .story,
+    .about-story,
+    .values,
+    .team-sec,
+    .contact-sec,
+    .menu-sec,
+    footer,
+    .page-hero {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .hero-title {
+      font-size: 2.1rem;
+      line-height: 1.1;
+    }
+
+    .hero-sub {
+      max-width: 100%;
+      font-size: 0.9rem;
+    }
+
+    .hero-right {
+      min-height: 320px;
+    }
+
+    .hero-badge {
+      width: 80px;
+      height: 80px;
+      left: 1rem;
+      bottom: 1rem;
+    }
+
+    .sec-title,
+    .page-hero .sec-title {
+      font-size: 1.8rem !important;
+    }
+
+    .spec-card:first-child img {
+      min-height: 260px;
+    }
+
+    .menu-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .menu-card img,
+    .gallery-item {
+      height: 240px;
+    }
+
+    .story-imgs,
+    .about-img-wrap img {
+      height: auto;
+      min-height: 260px;
+    }
+
+    .story-main,
+    .story-accent,
+    .about-acc {
+      position: relative;
+      width: 100%;
+      height: auto;
+      inset: auto;
+      border: none;
+      margin-top: 1rem;
+    }
+
+    .stats {
+      gap: 1.5rem;
+      text-align: center;
+    }
+
+    .footer-bot {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .filter-row {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 0.5rem;
+    }
+
+    .filt-btn {
+      white-space: nowrap;
+    }
+
+    .contact-items {
+      margin-top: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+
+    .hero-title {
+      font-size: 1.8rem;
+    }
+
+    .btn-dark,
+    .btn-outline,
+    .nav-cta {
+      width: 100%;
+      text-align: center;
+    }
+
+    .hero-btns {
+      flex-direction: column;
+    }
+
+    .menu-card img,
+    .gallery-item {
+      height: 210px;
+    }
+
+    .stat .num {
+      font-size: 2rem;
+    }
+
+    .testi-card,
+    .val-card,
+    .menu-card {
+      padding: 1rem;
+    }
+  }
+
+</style>
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Bon Bakery – interactive website preview with Home, Menu, and About Us pages</h2>
+
+<div class="site">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo" onclick="showPage('home')">Bon <span>Bakery</span></div>
+    <ul class="nav-links">
+      <li><button id="nav-home" class="active" onclick="showPage('home')">Home</button></li>
+      <li><button id="nav-menu" onclick="showPage('menu')">Menu</button></li>
+      <li><button id="nav-about" onclick="showPage('about')">About Us</button></li>
+    </ul>
+    <button class="nav-cta" onclick="showPage('menu')">Order Now</button>
+  </nav>
+
+  <!-- ═══ HOME ═══ -->
+  <div id="page-home" class="page active">
+
+    <div class="hero">
+      <div class="hero-left">
+        <p class="hero-eyebrow">Est. 2012 · Artisan Bakery</p>
+        <h1 class="hero-title">Baked with<br><em>Love &</em><br>Tradition</h1>
+        <p class="hero-sub">Every loaf tells a story. Every pastry holds a memory. We craft each piece from scratch using heirloom recipes and the finest ingredients.</p>
+        <div class="hero-btns">
+          <button class="btn-dark" onclick="showPage('menu')">Explore Menu</button>
+          <button class="btn-outline" onclick="showPage('about')">Our Story</button>
+        </div>
+      </div>
+      <div class="hero-right">
+        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=85" alt="Fresh sourdough bread" />
+        <div class="hero-badge"><div class="num">12+</div><div class="lbl">Years of<br>Craft</div></div>
+      </div>
+    </div>
+
+    <div class="marquee">
+      <div class="marquee-inner">
+        <span class="marquee-item">Sourdough Bread</span>
+        <span class="marquee-item">Butter Croissants</span>
+        <span class="marquee-item">Cinnamon Rolls</span>
+        <span class="marquee-item">Artisan Cakes</span>
+        <span class="marquee-item">Pain au Chocolat</span>
+        <span class="marquee-item">Danish Pastries</span>
+        <span class="marquee-item">Focaccia</span>
+        <span class="marquee-item">Macarons</span>
+        <span class="marquee-item">French Baguettes</span>
+        <span class="marquee-item">Lemon Tarts</span>
+        <span class="marquee-item">Sourdough Bread</span>
+        <span class="marquee-item">Butter Croissants</span>
+        <span class="marquee-item">Cinnamon Rolls</span>
+        <span class="marquee-item">Artisan Cakes</span>
+        <span class="marquee-item">Pain au Chocolat</span>
+        <span class="marquee-item">Danish Pastries</span>
+        <span class="marquee-item">Focaccia</span>
+        <span class="marquee-item">Macarons</span>
+        <span class="marquee-item">French Baguettes</span>
+        <span class="marquee-item">Lemon Tarts</span>
+      </div>
+    </div>
+
+    <div class="specials">
+      <div class="sec-head">
+        <div>
+          <p class="sec-label">Fresh Today</p>
+          <h2 class="sec-title">Our <em>Signature</em><br>Creations</h2>
+        </div>
+        <button class="btn-outline" onclick="showPage('menu')" style="font-size:0.75rem; padding:0.55rem 1.2rem;">Full Menu →</button>
+      </div>
+      <div class="specials-grid">
+        <div class="spec-card">
+          <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80" alt="Croissant" />
+          <div class="spec-overlay">
+            <span class="spec-tag">Bestseller</span>
+            <h3 class="spec-name">Butter Croissant</h3>
+            <p class="spec-price">from ₹85</p>
+          </div>
+        </div>
+        <div class="spec-card">
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80" alt="Cake" />
+          <div class="spec-overlay">
+            <span class="spec-tag">Made to Order</span>
+            <h3 class="spec-name">Celebration Cake</h3>
+            <p class="spec-price">from ₹1,200</p>
+          </div>
+        </div>
+        <div class="spec-card">
+          <img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=500&q=80" alt="Cinnamon Roll" />
+          <div class="spec-overlay">
+            <span class="spec-tag">Morning Special</span>
+            <h3 class="spec-name">Cinnamon Roll</h3>
+            <p class="spec-price">from ₹120</p>
+          </div>
+        </div>
+        <div class="spec-card">
+          <img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=500&q=80" alt="Macarons" />
+          <div class="spec-overlay">
+            <span class="spec-tag">Gift Box</span>
+            <h3 class="spec-name">Macaron Collection</h3>
+            <p class="spec-price">from ₹450</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="story">
+      <div>
+        <p class="sec-label">Our Roots</p>
+        <h2 class="sec-title" style="color:#fdf6ec; font-size:1.9rem;">A Passion Born<br>in a <em style="color:#d4a853;">Small Kitchen</em></h2>
+        <p>Bon Bakery started in 2012 with a single oven and an old family recipe book. What began as a weekend ritual became a neighbourhood institution people drive across the city for.</p>
+        <p>We believe great baking is about patience, quality ingredients, and respect for tradition — with a little creativity thrown in.</p>
+        <a onclick="showPage('about')">Read our full story →</a>
+      </div>
+      <div class="story-imgs">
+        <img class="story-main" src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=600&q=80" alt="Baker at work" />
+        <img class="story-accent" src="https://images.unsplash.com/photo-1549931319-a545dcf3bc7c?w=400&q=80" alt="Fresh bread loaves" />
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="num">50+</div><div class="lbl">Items Baked Daily</div></div>
+      <div class="stat"><div class="num">12</div><div class="lbl">Years of Craft</div></div>
+      <div class="stat"><div class="num">800+</div><div class="lbl">Happy Customers</div></div>
+      <div class="stat"><div class="num">100%</div><div class="lbl">Natural Ingredients</div></div>
+    </div>
+
+    <div class="testi">
+      <p class="sec-label">What People Say</p>
+      <h2 class="sec-title">Loved by the <em>Community</em></h2>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"The sourdough here is the best I've had outside Paris. The crust, the crumb, the flavour — absolutely unmatched."</p>
+          <div class="testi-name">Priya Sharma</div>
+          <div class="testi-role">Food Blogger · Delhi</div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"We ordered a custom wedding cake and Bon Bakery completely blew us away. Our guests wouldn't stop talking about it!"</p>
+          <div class="testi-name">Arjun & Meera</div>
+          <div class="testi-role">Couple · Gurugram</div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <p class="testi-text">"My morning isn't complete without a butter croissant from Bon. Flaky, buttery, always fresh. Nothing comes close."</p>
+          <div class="testi-name">Rohan Verma</div>
+          <div class="testi-role">Regular Customer</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-grid">
+        <div class="f-brand">
+          <div class="f-logo">Bon <span>Bakery</span></div>
+          <p>Handcrafted baked goods made with love, tradition, and the finest ingredients — served fresh every morning.</p>
+        </div>
+        <div class="f-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><button onclick="showPage('home')">Home</button></li>
+            <li><button onclick="showPage('menu')">Menu</button></li>
+            <li><button onclick="showPage('about')">About Us</button></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <h4>Specialties</h4>
+          <ul>
+            <li><button onclick="showPage('menu')">Artisan Breads</button></li>
+            <li><button onclick="showPage('menu')">Pastries</button></li>
+            <li><button onclick="showPage('menu')">Custom Cakes</button></li>
+            <li><button onclick="showPage('menu')">Beverages</button></li>
+          </ul>
+        </div>
+        <div class="f-col">
+          <h4>Visit Us</h4>
+          <p>12, Sector 4, Sushant Lok<br>Gurugram, Haryana 122002<br><br>Mon–Sat: 7 AM – 8 PM<br>Sunday: 8 AM – 6 PM<br><br>+91 98765 43210</p>
+        </div>
+      </div>
+      <div class="footer-bot">
+        <span>© 2025 Bon Bakery. All rights reserved.</span>
+        <span>Made with ♥ in Gurugram</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ═══ MENU ═══ -->
+  <div id="page-menu" class="page">
+    <div class="page-hero">
+      <p class="sec-label">Fresh Every Day</p>
+      <h1 class="sec-title">Our <em>Menu</em></h1>
+      <p>Everything baked from scratch each morning. No shortcuts. No compromises.</p>
+    </div>
+
+    <div class="menu-sec">
+      
+      <div class="menu-gallery">
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=1200&q=90" alt="Fresh bakery pastries">
+          <div class="gallery-overlay">
+            <span>Freshly Baked</span>
+            <h3>Warm pastries crafted every morning</h3>
+          </div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=90" alt="Artisan bread">
+          <div class="gallery-overlay">
+            <span>Signature Bread</span>
+            <h3>72-hour fermented sourdough</h3>
+          </div>
+        </div>
+
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&q=90" alt="Luxury cake">
+          <div class="gallery-overlay">
+            <span>Celebration Cakes</span>
+            <h3>Elegant handcrafted desserts</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-row">
+        <button class="filt-btn active" onclick="filterMenu('all', this)">All Items</button>
+        <button class="filt-btn" onclick="filterMenu('breads', this)">Breads</button>
+        <button class="filt-btn" onclick="filterMenu('pastries', this)">Pastries</button>
+        <button class="filt-btn" onclick="filterMenu('cakes', this)">Cakes</button>
+        <button class="filt-btn" onclick="filterMenu('tarts', this)">Tarts & Cookies</button>
+        <button class="filt-btn" onclick="filterMenu('beverages', this)">Beverages</button>
+      </div>
+
+      <div id="cat-breads">
+        <h2 class="cat-title">Artisan Breads</h2>
+        <div class="menu-grid">
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80" alt="Sourdough" /><div class="menu-body"><div class="menu-tag">Signature</div><h3 class="menu-name">Classic Sourdough</h3><p class="menu-desc">72-hour fermented wild yeast loaf with a crackly crust and open crumb.</p><div class="menu-foot"><span class="menu-price">₹380</span><button class="add-btn" onclick="addToCart('Classic Sourdough')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1549931319-a545dcf3bc7c?w=400&q=80" alt="Multigrain" /><div class="menu-body"><div class="menu-tag">Healthy Choice</div><h3 class="menu-name">Multigrain Loaf</h3><p class="menu-desc">Seeds of sesame, flax, and sunflower packed into every chewy slice.</p><div class="menu-foot"><span class="menu-price">₹320</span><button class="add-btn" onclick="addToCart('Multigrain Loaf')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=400&q=80" alt="Focaccia" /><div class="menu-body"><div class="menu-tag">Italian Style</div><h3 class="menu-name">Rosemary Focaccia</h3><p class="menu-desc">Olive oil, flaky sea salt, fresh rosemary, and roasted garlic.</p><div class="menu-foot"><span class="menu-price">₹260</span><button class="add-btn" onclick="addToCart('Rosemary Focaccia')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1600326145552-327f74bd9b8b?w=400&q=80" alt="Baguette" /><div class="menu-body"><div class="menu-tag">French Classic</div><h3 class="menu-name">French Baguette</h3><p class="menu-desc">Parisian-style baguette with a golden crust and airy interior.</p><div class="menu-foot"><span class="menu-price">₹150</span><button class="add-btn" onclick="addToCart('French Baguette')">+</button></div></div></div>
+        </div>
+      </div>
+
+      <div id="cat-pastries">
+        <h2 class="cat-title">Pastries & Viennoiserie</h2>
+        <div class="menu-grid">
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=80" alt="Croissant" /><div class="menu-body"><div class="menu-tag">Bestseller</div><h3 class="menu-name">Butter Croissant</h3><p class="menu-desc">Laminated with 81 layers of French butter for that signature flakiness.</p><div class="menu-foot"><span class="menu-price">₹85</span><button class="add-btn" onclick="addToCart('Butter Croissant')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1623334044303-241021148842?w=400&q=80" alt="Pain au Chocolat" /><div class="menu-body"><div class="menu-tag">Chocolate Lover</div><h3 class="menu-name">Pain au Chocolat</h3><p class="menu-desc">Belgian dark chocolate wrapped in buttery puff pastry.</p><div class="menu-foot"><span class="menu-price">₹110</span><button class="add-btn" onclick="addToCart('Pain au Chocolat')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=400&q=80" alt="Cinnamon Roll" /><div class="menu-body"><div class="menu-tag">Morning Special</div><h3 class="menu-name">Cinnamon Roll</h3><p class="menu-desc">Pillowy dough with cinnamon sugar and cream cheese glaze.</p><div class="menu-foot"><span class="menu-price">₹120</span><button class="add-btn" onclick="addToCart('Cinnamon Roll')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1590080875515-8a3a8dc5735e?w=400&q=80" alt="Danish" /><div class="menu-body"><div class="menu-tag">Seasonal</div><h3 class="menu-name">Danish Pastry</h3><p class="menu-desc">Custard and seasonal berry compote in flaky laminated dough.</p><div class="menu-foot"><span class="menu-price">₹130</span><button class="add-btn" onclick="addToCart('Danish Pastry')">+</button></div></div></div>
+        </div>
+      </div>
+
+      <div id="cat-cakes">
+        <h2 class="cat-title">Cakes & Celebration</h2>
+        <div class="menu-grid">
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&q=80" alt="Celebration Cake" /><div class="menu-body"><div class="menu-tag">Made to Order</div><h3 class="menu-name">Custom Celebration Cake</h3><p class="menu-desc">Fully customisable tiered cakes for weddings, birthdays, and every occasion.</p><div class="menu-foot"><span class="menu-price">from ₹1,200</span><button class="add-btn" onclick="addToCart('Custom Cake')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&q=80" alt="Opera Cake" /><div class="menu-body"><div class="menu-tag">Patisserie</div><h3 class="menu-name">Opera Cake</h3><p class="menu-desc">Almond joconde, coffee syrup, and silky ganache in perfect layers.</p><div class="menu-foot"><span class="menu-price">₹650</span><button class="add-btn" onclick="addToCart('Opera Cake')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&q=80" alt="Cheesecake" /><div class="menu-body"><div class="menu-tag">Classic</div><h3 class="menu-name">New York Cheesecake</h3><p class="menu-desc">Dense, creamy baked cheesecake on a buttery biscuit base.</p><div class="menu-foot"><span class="menu-price">₹420</span><button class="add-btn" onclick="addToCart('Cheesecake')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?w=400&q=80" alt="Chocolate Mousse" /><div class="menu-body"><div class="menu-tag">Indulgence</div><h3 class="menu-name">Dark Choco Mousse</h3><p class="menu-desc">Valrhona 70% chocolate mousse atop a rich brownie base.</p><div class="menu-foot"><span class="menu-price">₹480</span><button class="add-btn" onclick="addToCart('Dark Choco Mousse')">+</button></div></div></div>
+        </div>
+      </div>
+
+      <div id="cat-tarts">
+        <h2 class="cat-title">Tarts & Cookies</h2>
+        <div class="menu-grid">
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80" alt="Fruit Tart" /><div class="menu-body"><div class="menu-tag">Seasonal Fruit</div><h3 class="menu-name">Classic Fruit Tart</h3><p class="menu-desc">Crisp pâte sablée, vanilla custard cream, and fresh seasonal fruit.</p><div class="menu-foot"><span class="menu-price">₹220</span><button class="add-btn" onclick="addToCart('Fruit Tart')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1486427944299-d1955d23e34d?w=400&q=80" alt="Macarons" /><div class="menu-body"><div class="menu-tag">Gift Box</div><h3 class="menu-name">Macaron Collection</h3><p class="menu-desc">6 assorted French macarons in seasonal flavours — perfect for gifting.</p><div class="menu-foot"><span class="menu-price">₹450</span><button class="add-btn" onclick="addToCart('Macarons')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&q=80" alt="Cookies" /><div class="menu-body"><div class="menu-tag">Comfort Bake</div><h3 class="menu-name">Double Choco Cookies</h3><p class="menu-desc">Thick, chewy cookies loaded with two kinds of chocolate chips.</p><div class="menu-foot"><span class="menu-price">₹60</span><button class="add-btn" onclick="addToCart('Choco Cookies')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1571197119982-e0d7dc4bfc0d?w=400&q=80" alt="Lemon Tart" /><div class="menu-body"><div class="menu-tag">Tangy & Bright</div><h3 class="menu-name">Lemon Curd Tart</h3><p class="menu-desc">Zesty lemon curd in a buttery shell with Italian meringue torchée.</p><div class="menu-foot"><span class="menu-price">₹195</span><button class="add-btn" onclick="addToCart('Lemon Tart')">+</button></div></div></div>
+        </div>
+      </div>
+
+      <div id="cat-beverages">
+        <h2 class="cat-title">Beverages</h2>
+        <div class="menu-grid">
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&q=80" alt="Espresso" /><div class="menu-body"><div class="menu-tag">Coffee</div><h3 class="menu-name">Single Origin Espresso</h3><p class="menu-desc">Rotating single-origin beans, dialed in fresh daily by our barista.</p><div class="menu-foot"><span class="menu-price">₹90</span><button class="add-btn" onclick="addToCart('Espresso')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&q=80" alt="Latte" /><div class="menu-body"><div class="menu-tag">Specialty Coffee</div><h3 class="menu-name">Oat Milk Latte</h3><p class="menu-desc">Smooth espresso with creamy oat milk and a microfoam rosette.</p><div class="menu-foot"><span class="menu-price">₹160</span><button class="add-btn" onclick="addToCart('Oat Latte')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&q=80" alt="Matcha" /><div class="menu-body"><div class="menu-tag">Tea</div><h3 class="menu-name">Ceremonial Matcha</h3><p class="menu-desc">Grade-A Japanese matcha whisked with steamed milk.</p><div class="menu-foot"><span class="menu-price">₹175</span><button class="add-btn" onclick="addToCart('Matcha')">+</button></div></div></div>
+          <div class="menu-card"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&q=80" alt="Hot Chocolate" /><div class="menu-body"><div class="menu-tag">Indulgent</div><h3 class="menu-name">Dark Hot Chocolate</h3><p class="menu-desc">Valrhona 70% melted into warm milk — thick, rich, completely indulgent.</p><div class="menu-foot"><span class="menu-price">₹180</span><button class="add-btn" onclick="addToCart('Hot Chocolate')">+</button></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-grid">
+        <div class="f-brand"><div class="f-logo">Bon <span>Bakery</span></div><p>Handcrafted baked goods made with love, tradition, and the finest ingredients — served fresh every morning.</p></div>
+        <div class="f-col"><h4>Explore</h4><ul><li><button onclick="showPage('home')">Home</button></li><li><button onclick="showPage('menu')">Menu</button></li><li><button onclick="showPage('about')">About Us</button></li></ul></div>
+        <div class="f-col"><h4>Specialties</h4><ul><li><button onclick="showPage('menu')">Artisan Breads</button></li><li><button onclick="showPage('menu')">Pastries</button></li><li><button onclick="showPage('menu')">Custom Cakes</button></li><li><button onclick="showPage('menu')">Beverages</button></li></ul></div>
+        <div class="f-col"><h4>Visit Us</h4><p>12, Sector 4, Sushant Lok<br>Gurugram, Haryana 122002<br><br>Mon–Sat: 7 AM – 8 PM<br>Sunday: 8 AM – 6 PM<br><br>+91 98765 43210</p></div>
+      </div>
+      <div class="footer-bot"><span>© 2025 Bon Bakery. All rights reserved.</span><span>Made with ♥ in Gurugram</span></div>
+    </footer>
+  </div>
+
+  <!-- ═══ ABOUT ═══ -->
+  <div id="page-about" class="page">
+    <div class="page-hero">
+      <p class="sec-label">Est. 2012</p>
+      <h1 class="sec-title">Our <em>Story</em></h1>
+      <p>From a single oven and a worn recipe book to a bakery that's part of the neighbourhood's daily ritual.</p>
+    </div>
+
+    <div class="about-story">
+      <div class="about-grid">
+        <div class="about-img-wrap">
+          <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=700&q=80" alt="Baker at work" />
+          <img class="about-acc" src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&q=80" alt="Fresh bread" />
+        </div>
+        <div class="about-text">
+          <p class="sec-label">Where It Began</p>
+          <h2 class="sec-title">A Kitchen, a <em>Dream,</em><br>and a Recipe</h2>
+          <p>Bon Bakery was born in 2012 in a small kitchen in Gurugram. Our founder, Ananya Mehta, had grown up watching her grandmother bake sourdough every Saturday morning — a ritual she carried in her heart long after moving to the city.</p>
+          <p>What started as weekend bakes shared with neighbors quickly became something bigger. Within a year, Ananya had left her corporate job and opened the doors to the first proper Bon Bakery.</p>
+          <p>Today, over a decade later, we still use those same handwritten recipes — with a few learned refinements along the way.</p>
+        </div>
+      </div>
+
+      <div class="about-grid" style="direction:rtl; margin-top:2.5rem;">
+        <div class="about-text" style="direction:ltr;">
+          <p class="sec-label">Our Philosophy</p>
+          <h2 class="sec-title">No Shortcuts. <em>Ever.</em></h2>
+          <p>We believe in the slow way. Our sourdough ferments for at least 72 hours. Our croissants are laminated by hand with real French butter. Our cakes use single-origin chocolate and seasonal fruit.</p>
+          <p>We don't use stabilizers, artificial flavors, or preservatives. Every item is baked in small batches by trained bakers who show up before dawn because they genuinely love what they do.</p>
+        </div>
+        <div class="about-img-wrap" style="direction:ltr;">
+          <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=700&q=80" alt="Baking process" />
+        </div>
+      </div>
+    </div>
+
+    <div class="values">
+      <p class="sec-label">What We Stand For</p>
+      <h2 class="sec-title">Our <em>Values</em></h2>
+      <div class="val-grid">
+        <div class="val-card"><span class="val-icon">🌾</span><h3>Honest Ingredients</h3><p>Heritage wheat, free-range eggs, local dairy. If we can't say where it came from, we don't use it.</p></div>
+        <div class="val-card"><span class="val-icon">⏱️</span><h3>Time & Patience</h3><p>Slow fermentation, proper proofing, even baking. Time is our most important ingredient.</p></div>
+        <div class="val-card"><span class="val-icon">🤲</span><h3>Crafted by Hand</h3><p>From shaping loaves to piping rosettes — our bakers use their hands at every step.</p></div>
+        <div class="val-card"><span class="val-icon">🌱</span><h3>Sustainability First</h3><p>Compostable packaging, minimal food waste, and a net-zero bakery plan for 2026.</p></div>
+        <div class="val-card"><span class="val-icon">🏘️</span><h3>Community Roots</h3><p>We grew out of this neighbourhood — free monthly bread-baking workshops for locals.</p></div>
+        <div class="val-card"><span class="val-icon">💛</span><h3>Made with Love</h3><p>Every baker here works here because they love the craft. That energy goes into every item.</p></div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="num">50+</div><div class="lbl">Items Baked Daily</div></div>
+      <div class="stat"><div class="num">12</div><div class="lbl">Years of Craft</div></div>
+      <div class="stat"><div class="num">800+</div><div class="lbl">Happy Customers</div></div>
+      <div class="stat"><div class="num">100%</div><div class="lbl">Natural Ingredients</div></div>
+    </div>
+
+    <div class="team-sec">
+      <p class="sec-label">The People Behind the Bread</p>
+      <h2 class="sec-title">Meet Our <em>Bakers</em></h2>
+      <div class="team-grid">
+        <div class="team-card">
+          <img src="https://images.unsplash.com/photo-1607631568010-a87245c0daf8?w=400&q=80" alt="Ananya Mehta" />
+          <h3>Ananya Mehta</h3><p>Founder & Head Baker</p>
+        </div>
+        <div class="team-card">
+          <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=400&q=80" alt="Rohan Kapoor" />
+          <h3>Rohan Kapoor</h3><p>Pastry Chef</p>
+        </div>
+        <div class="team-card">
+          <img src="https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=400&q=80" alt="Priya Singh" />
+          <h3>Priya Singh</h3><p>Artisan Bread Specialist</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-sec">
+      <div>
+        <h2>Come Visit Us or <em>Get in Touch</em></h2>
+        <p>Whether it's a custom cake order, a private tasting, or just finding out when the next sourdough batch is ready — we'd love to hear from you.</p>
+        <button class="btn-dark">Send Us a Message</button>
+      </div>
+      <div class="contact-items">
+        <div class="c-item"><span class="c-ico">📍</span><div class="c-text"><strong>Address</strong><p>12, Sector 4, Sushant Lok<br>Gurugram, Haryana 122002</p></div></div>
+        <div class="c-item"><span class="c-ico">🕐</span><div class="c-text"><strong>Opening Hours</strong><p>Mon–Sat: 7:00 AM – 8:00 PM<br>Sunday: 8:00 AM – 6:00 PM</p></div></div>
+        <div class="c-item"><span class="c-ico">📞</span><div class="c-text"><strong>Phone & Email</strong><p>+91 98765 43210<br>hello@bonbakery.in</p></div></div>
+        <div class="c-item"><span class="c-ico">🚚</span><div class="c-text"><strong>Delivery</strong><p>Available on Swiggy & Zomato<br>or call us for bulk orders</p></div></div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-grid">
+        <div class="f-brand"><div class="f-logo">Bon <span>Bakery</span></div><p>Handcrafted baked goods made with love, tradition, and the finest ingredients — served fresh every morning.</p></div>
+        <div class="f-col"><h4>Explore</h4><ul><li><button onclick="showPage('home')">Home</button></li><li><button onclick="showPage('menu')">Menu</button></li><li><button onclick="showPage('about')">About Us</button></li></ul></div>
+        <div class="f-col"><h4>Specialties</h4><ul><li><button onclick="showPage('menu')">Artisan Breads</button></li><li><button onclick="showPage('menu')">Pastries</button></li><li><button onclick="showPage('menu')">Custom Cakes</button></li><li><button onclick="showPage('menu')">Beverages</button></li></ul></div>
+        <div class="f-col"><h4>Visit Us</h4><p>12, Sector 4, Sushant Lok<br>Gurugram, Haryana 122002<br><br>Mon–Sat: 7 AM – 8 PM<br>Sunday: 8 AM – 6 PM<br><br>+91 98765 43210</p></div>
+      </div>
+      <div class="footer-bot"><span>© 2025 Bon Bakery. All rights reserved.</span><span>Made with ♥ in Gurugram</span></div>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+  const nb = document.getElementById('nav-' + id);
+  if (nb) nb.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function filterMenu(cat, btn) {
+  document.querySelectorAll('.filt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cats = ['breads','pastries','cakes','tarts','beverages'];
+  cats.forEach(c => {
+    const el = document.getElementById('cat-' + c);
+    if (cat === 'all' || cat === c) { el.style.display = 'block'; }
+    else { el.style.display = 'none'; }
+  });
+}
+
+function addToCart(name) {
+  const toast = document.getElementById('toast');
+  toast.textContent = name + ' added! 🎉';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2200);
+}
+</script>
